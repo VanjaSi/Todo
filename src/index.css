@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap');
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+body {
+	font-family: 'Cairo', sans-serif;
+}
+.container {
+	max-width: 80%;
+	margin: auto;
+}
+.header {
+	background-color: rgb(54, 53, 53);
+	display: flex;
+	justify-content: space-between;
+
+	padding: 4px;
+}
+.header .logo {
+	width: 20px;
+	height: 20px;
+	margin: 5px;
+}
+
+.header .link-item {
+	color: white;
+	margin: 0 5px;
+	text-decoration: none;
+	padding: 2px;
+	text-transform: uppercase;
+	font-size: 12px;
+
+	user-select: none !important;
+}
+.header .link-item.active {
+	color: rgb(211, 5, 5);
+}
+
+.header .link-item:hover {
+	border-bottom: 2px solid rgb(211, 5, 5);
+	transition: 0.5s ease;
+}
+.row {
+	display: flex;
+	justify-content: space-between;
+	gap: 15px;
+	width: 100%;
+}
+
+.col {
+	width: 50%;
+}
+.card {
+	box-shadow: 2px 6px 4px -4px rgb(54, 53, 53);
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 10px;
+	text-align: center;
+	font-size: 14px;
+	position: relative;
+}
+
+.card:hover {
+	box-shadow: 1px 2px 8px -5px rgb(54 53 53);
+	transform: scale(1.02);
+	transition: all 500ms ease-out;
+	cursor: pointer;
+}
+
+form {
+	width: 90%;
+	margin: 30px auto;
+}
+.form-control {
+	margin: 15px 0;
+	box-shadow: 1px 2px 8px -5px rgb(13, 65, 97);
+	padding: 8px;
+	width: 70%;
+	margin: 0 auto;
+	text-align: center;
+	border-radius: 5px;
+}
+input,
+label {
+	border: none;
+	width: 400px;
+	font-size: 14px;
+	color: #656262;
+}
+
+.form-control.submit {
+	background-color: #656262;
+}
+.form-control.submit > input {
+	color: white;
+	font-weight: bold;
+	font-size: 20px;
+	background-color: #656262;
+}
+
+input[type='submit']:hover {
+	cursor: pointer;
+	transform: scale(1.05);
+	transition: all 500ms ease;
+}
+input:focus:not(input[type='submit']) {
+	outline: none;
+	color: #000;
+}
+.error-holder {
+	box-shadow: 1px 2px 8px -5px rgb(211, 5, 5);
+	position: relative;
+	padding: 10px;
+}
