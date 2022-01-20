@@ -45,12 +45,17 @@ body {
 .row {
 	display: flex;
 	justify-content: space-between;
-	gap: 15px;
-	width: 100%;
 }
 
+.row-card {
+	display: flex;
+	justify-content: flex-start;
+	gap: 15px;
+	width: 100%;
+	flex-wrap: wrap;
+}
 .col {
-	width: 50%;
+	width: 29%;
 }
 .card {
 	box-shadow: 2px 6px 4px -4px rgb(54, 53, 53);
@@ -78,7 +83,7 @@ form {
 	box-shadow: 1px 2px 8px -5px rgb(13, 65, 97);
 	padding: 8px;
 	width: 70%;
-	margin: 0 auto;
+	margin: 10px auto;
 	text-align: center;
 	border-radius: 5px;
 }
@@ -113,4 +118,32 @@ input:focus:not(input[type='submit']) {
 	box-shadow: 1px 2px 8px -5px rgb(211, 5, 5);
 	position: relative;
 	padding: 10px;
+}
+.edit-icon {
+	color: #4961a3;
+	height: 13px;
+	cursor: pointer;
+	display: inline-block;
+}
+.delete-icon {
+	color: #d30505;
+	height: 13px;
+	cursor: pointer;
+	display: inline-block;
+}
+.check-icon {
+	color: #008000;
+	width: 30px;
+	height: 100px;
+	cursor: pointer;
+}
+h4 {
+	font-weight: 400;
+}
+.todo-info {
+	margin: 5px;
+}
+.view-title {
+	margin: 10px 0;
+	font-size: 1.5rem;
 }

@@ -3,7 +3,7 @@ import { useState, createContext, useEffect } from 'react';
 const TodoContext = createContext();
 
 export function TodoProvider({ children }) {
-	const [todos, setTodos] = useState(null);
+	const [todos, setTodos] = useState([]);
 	const [edit, setEdit] = useState({ todo: null, edit: false });
 
 	const fetchData = async (url, method) => {
@@ -47,7 +47,6 @@ export function TodoProvider({ children }) {
 	};
 
 	const updateTodos = async (todo) => {
-		console.log(todo);
 		await fetchData(`/todos/${todo.id}`, {
 			method: 'PUT',
 			body: JSON.stringify(todo),
@@ -55,6 +54,7 @@ export function TodoProvider({ children }) {
 				'Content-type': 'application/json; charset=UTF-8',
 			},
 		});
+
 		setTodos(await fetchData('/todos?_sort=id&_order=DESC'));
 		setEdit({ todo: null, edit: false });
 	};

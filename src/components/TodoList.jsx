@@ -11,41 +11,17 @@ function TodoList({ todo }) {
 	return (
 		<Card>
 			<div className='row'>
-				<FaEdit
-					style={{
-						color: '#4961a3',
-						width: '30px',
-						height: '30px',
-						cursor: 'pointer',
-						display: 'inline-block',
-					}}
-					onClick={() => editTodo(todo)}
-				/>
-				<FaTimes
-					style={{
-						color: 'd30505',
-						width: '30px',
-						height: '30px',
-						cursor: 'pointer',
-						display: 'inline-block',
-					}}
-					onClick={() => deleteTodo(todo.id)}
-				/>
+				<FaEdit className='edit-icon' onClick={() => editTodo(todo)} />
+				<FaTimes className='delete-icon' onClick={() => deleteTodo(todo.id)} />
 			</div>
 
-			<h3>{todo.text}</h3>
-			<h4>{todo.time}</h4>
+			<div className='todo-info'>
+				<h3>{todo.text}</h3>
+				<h4>{todo.day}</h4>
+				<h4>{todo.time}</h4>
+			</div>
 
-			{todo.complete && (
-				<FaCheck
-					style={{
-						color: 'green',
-						width: '60px',
-						height: '100px',
-						cursor: 'pointer',
-					}}
-				/>
-			)}
+			{todo.complete && <FaCheck className='check-icon' />}
 		</Card>
 	);
 }

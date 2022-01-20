@@ -7,19 +7,25 @@ function HomeView() {
 	const { todos, edit } = useContext(TodoContext);
 
 	return (
-		<div>
+		<>
 			{edit.edit ? (
 				<AddForm />
 			) : (
 				<div>
-					<h3>List of Todoes</h3>
-					<div className='row'>
-						{todos &&
-							todos.map((todo) => <TodoList key={todo.id} todo={todo} />)}
-					</div>
+					<h3 className='view-title'>List of Todoes</h3>
+
+					{todos ? (
+						<div className='row-card'>
+							{todos.map((todo) => (
+								<TodoList key={todo.id} todo={todo} />
+							))}
+						</div>
+					) : (
+						<p>No todos to show</p>
+					)}
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
 

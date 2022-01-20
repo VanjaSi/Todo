@@ -1,107 +1,96 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import TodoContext from '../context/TodoContext';
-import Error from './shared/Error';
+import DatePicker from 'react-datepicker';
+import setHours from 'date-fns/setHours';
+import setMinutes from 'date-fns/setMinutes';
+import 'react-datepicker/dist/react-datepicker.css';
 
 function AddForm({ add }) {
-	const [date, setDate] = useState('');
 	const [text, setText] = useState('');
-	const [time, setTime] = useState('');
-	const [isChecked, setIsChecked] = useState();
+	const [date, setDate] = useState('');
+	const [isChecked, setIsChecked] = useState(false);
 
-	const [error, setError] = useState('');
 	const { edit, updateTodos, addTodo } = useContext(TodoContext);
 
-	useEffect(() => {
-		if (add === 'add') {
-			setText('');
-			setTime('');
-			setDate('');
-			setIsChecked('');
-		} else {
-			setText(edit.todo.text);
-			setDate(edit.todo.date);
-			setTime(edit.todo.time);
-			setIsChecked(edit.todo.complete);
-		}
-	}, []);
-
-	const dateRef = useRef();
+	const inputText = useRef();
 	const navigate = useNavigate();
 
-	const formatText = (e) => {
-		setText(e.target.value);
-	};
-	const formatDate = (e) => {
-		const today = new Date(date);
-		const selected = new Date(e.target.value);
-		const diff = (selected.getTime() - today.getTime()) / (1000 * 60 * 60 * 24);
-
-		if (diff < 0) {
-			setError('Previous days cannot be selected');
-
-			return;
+	useEffect(() => {
+		inputText.current.focus();
+		if (add) {
+			setText('');
+			setDate('');
+			setIsChecked(false);
+		} else {
+			setText(edit.todo.text);
+			setDate(Date.parse(edit.todo.day));
+			setIsChecked(edit.todo.complete);
 		}
-		setError('');
-		setDate(selected.toDateString());
-	};
-	const formatTime = (e) => {
-		setTime(e.target.value);
-	};
-	const toggleComplete = (e) => {
-		setIsChecked(e.target.checked);
-	};
-	const handleSubmitAdd = (e) => {
+	}, [add, edit.todo.complete, edit.todo.day, edit.todo.text]);
+
+	const handleSubmit = (e, add) => {
 		e.preventDefault();
-		if (!text || !date || !time) {
-			//Error component
-			setError('Fill all the fields');
-			// alert('fill all the fields');
-			return;
-		}
-		setError('');
+		const day = date ? new Date(date).toDateString() : '';
+		const time = date
+			? new Date(date).toLocaleTimeString([], {
+					hour: '2-digit',
+					minute: '2-digit',
+			  })
+			: '';
 		const newTodo = {
 			text,
-			time: `${date} at ${time}`,
+			day,
+			time,
 			complete: isChecked,
 		};
-		addTodo(newTodo);
-		setDate('');
-		setTime('');
-		setText('');
-		navigate('/');
-	};
-	const handleSubmitEdit = (e) => {
-		e.preventDefault();
-
-		updateTodos('todo');
-		const newTodo = {
-			text,
-			time: `${date} at ${time}`,
-			complete: isChecked,
-			id: edit.todo.id,
-		};
-		updateTodos(newTodo);
+		if (add) {
+			addTodo(newTodo);
+			navigate('/');
+			return;
+		} else {
+			newTodo.id = edit.todo.id;
+			updateTodos(newTodo);
+		}
 	};
 
 	return (
 		<div className='row-column'>
-			{error && <Error>{error}</Error>}
-			{edit.edit ? <h3>Edit Todo</h3> : ''}
-			<form onSubmit={edit.edit ? handleSubmitEdit : handleSubmitAdd}>
+			{edit.edit ? <h3 className='view-title'>Edit Todo</h3> : ''}
+			<form
+				onSubmit={(e) =>
+					add ? handleSubmit(e, true) : handleSubmit(e, false)
+				}>
 				<div className='form-control'>
 					<input
+						ref={inputText}
 						type='text'
 						placeholder='Add todo...'
 						value={text}
-						onChange={formatText}
+						onChange={(e) => setText(e.target.value)}
+						required
 					/>
 				</div>
 				<div className='form-control'>
-					<input type='date' ref={dateRef} onChange={formatDate} />
-				</div>
-				<div className='form-control'>
-					<input type='time' value={time} onChange={formatTime} />
+					<DatePicker
+						className='date-picker'
+						selected={date}
+						placeholderText={add && 'Click to select a date'}
+						onChange={(date) => setDate(date)}
+						isClearable
+						showTimeSelect
+						timeFormat='HH:mm'
+						injectTimes={[
+							setHours(setMinutes(new Date(), 1), 0),
+							setHours(setMinutes(new Date(), 5), 12),
+							setHours(setMinutes(new Date(), 59), 23),
+						]}
+						dateFormat='MMMM d, yyyy h:mm aa'
+						minDate={new Date()}
+						InputProps={{
+							disableUnderline: true,
+						}}
+					/>
 				</div>
 				{edit.edit && (
 					<div className='form-control row'>
@@ -112,14 +101,14 @@ function AddForm({ add }) {
 							id='check'
 							type='checkbox'
 							value={isChecked}
-							onChange={toggleComplete}
+							onChange={(e) => setIsChecked(e.target.checked)}
 							checked={isChecked}
 							style={{ width: '30px', color: '#000' }}
 						/>
 					</div>
 				)}
 				<div className='form-control submit'>
-					<input type='submit' value={edit.edit ? 'Edit Todo' : 'Add Todo'} />{' '}
+					<input type='submit' value={edit.edit ? 'Edit Todo' : 'Add Todo'} />
 				</div>
 			</form>
 		</div>
